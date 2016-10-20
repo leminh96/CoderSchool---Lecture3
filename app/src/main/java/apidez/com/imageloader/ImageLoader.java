@@ -36,10 +36,12 @@ public class ImageLoader {
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
                 InputStream in = connection.getInputStream();
+                publishProgress(50);
                 bitmap = BitmapFactory.decodeStream(in);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            publishProgress(100);
             return bitmap;
         }
 
