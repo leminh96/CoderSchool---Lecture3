@@ -8,12 +8,16 @@ import android.widget.ImageView;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private PostDAO mPostDAO;
     ImageView ivImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Init DAO
+        mPostDAO = new PostDAO();
 
         // Load images
         ivImage = (ImageView) findViewById(R.id.ivImage);
@@ -25,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLoad(List<Post> posts) {
                 Log.d("Success", String.valueOf(posts.size()));
+                mPostDAO.deleteAll();
+                mPostDAO.bulkInsert(posts);
+                List<PostEntity> postEntities = mPostDAO.getAll();
+                Log.d("Success", String.valueOf(postEntities.size()));
             }
 
             @Override
