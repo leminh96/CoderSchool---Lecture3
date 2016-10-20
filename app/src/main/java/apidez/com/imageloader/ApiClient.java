@@ -46,17 +46,14 @@ public class ApiClient {
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("Accept", "application/json");
-                InputStreamReader inputStreamReader = new InputStreamReader(connection.getInputStream());
+                InputStreamReader inputStreamReader = new InputStreamReader(connection.getInputStream(), "UTF-8");
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 String output;
                 while ((output = bufferedReader.readLine()) != null) {
                     json += output;
                 }
                 return parsePosts(json);
-            } catch (IOException e) {
-                e.printStackTrace();
-                mListener.onError(e);
-            } catch (JSONException e) {
+            } catch (IOException | JSONException e) {
                 e.printStackTrace();
                 mListener.onError(e);
             }
