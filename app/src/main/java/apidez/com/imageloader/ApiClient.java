@@ -2,6 +2,8 @@ package apidez.com.imageloader;
 
 import android.os.AsyncTask;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,8 +54,9 @@ public class ApiClient {
                 while ((output = bufferedReader.readLine()) != null) {
                     json += output;
                 }
-                return parsePosts(json);
-            } catch (IOException | JSONException e) {
+                Gson gson = new Gson();
+                return gson.fromJson(json, PostResponse.class).getPosts();
+            } catch (IOException e) {
                 e.printStackTrace();
                 mListener.onError(e);
             }
