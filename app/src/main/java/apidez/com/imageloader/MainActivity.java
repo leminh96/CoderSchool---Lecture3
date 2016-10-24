@@ -7,8 +7,11 @@ import android.widget.ImageView;
 
 import java.util.List;
 
+import apidez.com.imageloader.realm.PostDataSource;
+
 public class MainActivity extends AppCompatActivity {
     private PostDAO mPostDAO;
+    private PostDataSource mPostDataSource;
     ImageView ivImage;
 
     @Override
@@ -18,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Init DAO
         mPostDAO = new PostDAO();
+        mPostDataSource = new PostDataSource();
 
         // Load images
         ivImage = (ImageView) findViewById(R.id.ivImage);
@@ -29,10 +33,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLoad(List<Post> posts) {
                 Log.d("Success", String.valueOf(posts.size()));
-                mPostDAO.deleteAll();
-                mPostDAO.bulkInsert(posts);
-                List<PostEntity> postEntities = mPostDAO.getAll();
-                Log.d("Success", String.valueOf(postEntities.size()));
+                mPostDataSource.store(posts);
+                List<Post> newPosts = mPostDataSource.getAll();
+                Log.d("Success", String.valueOf(newPosts.size()));
             }
 
             @Override
