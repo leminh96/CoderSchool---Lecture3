@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Load images
         ivImage = (ImageView) findViewById(R.id.ivImage);
-        String url = "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcR7aE8c_B-sUW7sgcXJHsYUFx2Jp1FdJJQ9VroMEBgipouCW_fO";
+        String url = "https://cnet4.cbsistatic.com/hub/i/2011/10/27/a66dfbb7-fdc7-11e2-8c7c-d4ae52e62bcc/android-wallpaper5_2560x1600_1.jpg";
         new ImageLoader().loadUrl(ivImage, url);
 
         // Load api
