@@ -4,13 +4,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import apidez.com.imageloader.realm.PostDataSource;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 
 public class MainActivity extends AppCompatActivity {
     private PostDAO mPostDAO;
@@ -31,19 +28,19 @@ public class MainActivity extends AppCompatActivity {
         String url = "https://cnet4.cbsistatic.com/hub/i/2011/10/27/a66dfbb7-fdc7-11e2-8c7c-d4ae52e62bcc/android-wallpaper5_2560x1600_1.jpg";
         new ImageLoader().loadUrl(ivImage, url);
 
-        mPostDataSource.getAllAsObservable()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Post>>() {
-                    @Override
-                    public void call(List<Post> posts) {
-                        Toast.makeText(MainActivity.this, String.valueOf(posts.size()), Toast.LENGTH_SHORT).show();
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Toast.makeText(MainActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+//        mPostDataSource.getAllAsObservable()
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Action1<List<Post>>() {
+//                    @Override
+//                    public void call(List<Post> posts) {
+//                        Toast.makeText(MainActivity.this, String.valueOf(posts.size()), Toast.LENGTH_SHORT).show();
+//                    }
+//                }, new Action1<Throwable>() {
+//                    @Override
+//                    public void call(Throwable throwable) {
+//                        Toast.makeText(MainActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//                });
 
         // Load api
         new ApiClient().loadPosts(new ApiClient.Listener() {
