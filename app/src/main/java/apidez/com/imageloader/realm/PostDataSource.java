@@ -7,7 +7,7 @@ import apidez.com.imageloader.Post;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.rx.RealmObservableFactory;
-import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * Created by nongdenchet on 10/24/16.
@@ -47,24 +47,19 @@ public class PostDataSource {
         return posts;
     }
 
-    public rx.Observable<List<Post>> getAllAsObservable() {
-        return mFactory.from(Realm.getDefaultInstance())
-                .map(new Func1<Realm, RealmResults<PostEntity>>() {
-                    @Override
-                    public RealmResults<PostEntity> call(Realm realm) {
-                        return realm.where(PostEntity.class)
-                                .findAll();
-                    }
-                })
-                .map(new Func1<RealmResults<PostEntity>, List<Post>>() {
-                    @Override
-                    public List<Post> call(RealmResults<PostEntity> postEntities) {
-                        List<Post> posts = new ArrayList<>();
-                        for (PostEntity entity : postEntities) {
-                            posts.add(entity.toModel());
-                        }
-                        return posts;
-                    }
-                });
+    @SuppressWarnings("TryFinallyCanBeTryWithResources")
+    public Observable<List<Post>> getAllAsObservable() {
+        Realm realm= Realm.getDefaultInstance();
+        try {
+            RealmResults<PostEntity> postEntities = realm.where(PostEntity.class)
+                    .findAll();
+            List<Post> posts = new ArrayList<>();
+            for (PostEntity entity : postEntities) {
+                posts.add(entity.toModel());
+            }
+            return Observable.just(posts);
+        } finally {
+            realm.close();
+        }
     }
 }
