@@ -2,8 +2,6 @@ package apidez.com.imageloader;
 
 import android.app.Application;
 
-import com.activeandroid.ActiveAndroid;
-
 import io.realm.Realm;
 
 /**
@@ -16,6 +14,5 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Realm.init(this);
-        ActiveAndroid.initialize(this);
     }
 }
