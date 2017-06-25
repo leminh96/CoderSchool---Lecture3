@@ -6,19 +6,12 @@ import java.util.List;
 import apidez.com.imageloader.Post;
 import io.realm.Realm;
 import io.realm.RealmResults;
-import io.realm.rx.RealmObservableFactory;
-import rx.Observable;
 
 /**
- * Created by nongdenchet on 10/24/16.
+ Created by nongdenchet on 10/24/16.
  */
 
-public class PostDataSource {
-    private RealmObservableFactory mFactory;
-
-    public PostDataSource() {
-        mFactory = new RealmObservableFactory();
-    }
+public class PostDAO {
 
     public void store(final List<Post> posts) {
         Realm instance = Realm.getDefaultInstance();
@@ -47,19 +40,14 @@ public class PostDataSource {
         return posts;
     }
 
-    @SuppressWarnings("TryFinallyCanBeTryWithResources")
-    public Observable<List<Post>> getAllAsObservable() {
-        Realm realm= Realm.getDefaultInstance();
-        try {
-            RealmResults<PostEntity> postEntities = realm.where(PostEntity.class)
-                    .findAll();
-            List<Post> posts = new ArrayList<>();
-            for (PostEntity entity : postEntities) {
-                posts.add(entity.toModel());
+    public void clear() {
+        Realm instance = Realm.getDefaultInstance();
+        instance.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.where(PostEntity.class).findAll().deleteAllFromRealm();
             }
-            return Observable.just(posts);
-        } finally {
-            realm.close();
-        }
+        });
+        instance.close();
     }
 }
