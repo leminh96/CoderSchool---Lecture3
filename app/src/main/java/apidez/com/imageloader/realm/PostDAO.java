@@ -18,7 +18,6 @@ public class PostDAO {
         instance.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                realm.where(PostEntity.class).findAll().deleteAllFromRealm();
                 for (Post post : posts) {
                     PostEntity entity = realm.createObject(PostEntity.class);
                     entity.map(post);
